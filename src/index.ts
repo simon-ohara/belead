@@ -35,18 +35,27 @@ function parseSliderValue(sliderValue: number) {
   ball.speed = tPercentage;
 }
 
-const getLastPoint: () => ControlPoint = () => {
-  const {points: _points} = curves[curves.length - 1];
+const getFirstPoint: (curve: BezierCurve) => ControlPoint = curve => {
+  const {points: _points} = curve;
+  return _points[0];
+};
+
+const getLastPoint: (curve: BezierCurve) => ControlPoint = curve => {
+  const {points: _points} = curve;
   return _points[_points.length - 1];
 };
 
-const ballAtLastPoint: () => boolean = () => {
-  const {x, y} = getLastPoint();
+const ballAtLastPoint: (curve: BezierCurve) => boolean = curve => {
+  const {x, y} = getLastPoint(curve);
   return ball.x === x && ball.y === y;
 };
 
+const ballAtFinalPoint: () => boolean = () => {
+  return ballAtLastPoint(curves[curves.length - 1]);
+};
+
 function playBtnText() {
-  if (ballAtLastPoint()) {
+  if (ballAtFinalPoint()) {
     playBtn.textContent = 'Restart?';
     slider.disabled = false;
   }
@@ -114,11 +123,20 @@ curves.push(
 );
 const ball = new Ball(curves[0].points[0].x, curves[0].points[0].y, 0.1, 0, 20);
 const posRadius = 7;
-// let pointToMove: ControlPoint | null;
+
+interface ActivePoint {
+  curve: number;
+  point: ControlPoint;
+}
+
+let pointToMove: ActivePoint | null;
 
 let isClickDown = false;
 
-function moveBallInBezierCurve(curve: BezierCurve) {
+let currentBallCurve = 0;
+
+function moveBallInBezierCurve() {
+  const curve = curves[currentBallCurve];
   const [p0, p1, p2, p3] = curve.points;
   //Calculate the coefficients based on where the ball currently is in the animation
   const cx = 3 * (p1.x - p0.x);
@@ -145,6 +163,17 @@ function moveBallInBezierCurve(curve: BezierCurve) {
   ball.x = xt;
   ball.y = yt;
   drawBall();
+
+  const lastPoint = getLastPoint(curve);
+
+  if (
+    ball.x === lastPoint.x &&
+    ball.y === lastPoint.y &&
+    currentBallCurve < curves.length - 1
+  ) {
+    currentBallCurve++;
+    ball.t = ball.speed;
+  }
 }
 
 function drawBall() {
@@ -194,9 +223,9 @@ function checkIfCursorInPoint(curve?: BezierCurve) {
   return curve.points.find(point => isMouseOverPoint(point)) || null;
 }
 
-function movePoint(curve: BezierCurve, pointToMove: ControlPoint) {
-  const {points} = curve;
-  const index = points.indexOf(pointToMove as ControlPoint);
+function movePoint() {
+  const {points} = curves[pointToMove!.curve];
+  const index = points.indexOf(pointToMove!.point as ControlPoint);
   const point = points[index];
 
   // constrain intermediate control points relative to outer points
@@ -206,6 +235,19 @@ function movePoint(curve: BezierCurve, pointToMove: ControlPoint) {
     const deltaY = point.y - innerPoint.y;
     innerPoint.x = mousePos.x - deltaX;
     innerPoint.y = mousePos.y - deltaY;
+  }
+
+  // constrain outer points of consecutive curve
+  if (pointToMove!.curve > 0 && index === 0) {
+    const prevCurveLastPoint = getLastPoint(curves[pointToMove!.curve - 1]);
+    prevCurveLastPoint.x = mousePos.x;
+    prevCurveLastPoint.y = mousePos.y;
+  }
+
+  if (pointToMove!.curve < curves.length - 1 && index === 3) {
+    const nextCurveFirstPoint = getFirstPoint(curves[pointToMove!.curve + 1]);
+    nextCurveFirstPoint.x = mousePos.x;
+    nextCurveFirstPoint.y = mousePos.y;
   }
 
   point.x = mousePos.x;
@@ -239,18 +281,18 @@ function animate() {
   if (!playAnim) {
     drawBall();
   } else {
-    curves.forEach(curve => moveBallInBezierCurve(curve));
+    moveBallInBezierCurve();
   }
 
   if (!slider.disabled) {
-    let pointToMove: ControlPoint | null;
+    // let pointToMove: ControlPoint | null;
     // improve how we find clicked point
-    const activeCurve = curves.find(curve => {
-      pointToMove = checkIfCursorInPoint(curve);
-      return pointToMove;
-    })!;
+    // const activeCurve = curves.find(curve => {
+    //   pointToMove = checkIfCursorInPoint(curve);
+    //   return pointToMove;
+    // })!;
     // const pointToMove = checkIfCursorInPoint(ac);
-    if (pointToMove!) movePoint(activeCurve, pointToMove);
+    if (pointToMove) movePoint();
     curves.forEach(curve => {
       drawLine(curve);
       //Points will be above everything else
@@ -264,11 +306,12 @@ animate();
 
 //Event listeners
 playBtn.addEventListener('click', () => {
+  currentBallCurve = 0;
   playAnim = true;
   slider.disabled = true;
-  if (ballAtLastPoint()) {
+  if (ballAtFinalPoint()) {
     //Restart the animation
-    const {x, y} = getLastPoint();
+    const {x, y} = getLastPoint(curves[curves.length - 1]);
     ball.t = 0;
     ball.x = x;
     ball.y = y;
@@ -286,7 +329,7 @@ canvas.addEventListener('mousemove', e => {
 
 canvas.addEventListener('mousedown', () => {
   if (addPoint.checked) {
-    const lastPoint = getLastPoint();
+    const lastPoint = getLastPoint(curves[curves.length - 1]);
     const newPoint = mousePos;
     const delta: {x: number; y: number} = {
       x: newPoint.x - lastPoint.x,
@@ -303,14 +346,36 @@ canvas.addEventListener('mousedown', () => {
     addPoint.checked = false;
     return;
   }
+
   isClickDown = true;
+
+  // pointToMove =
+  // let pointToMove: ControlPoint | null;
+  // improve how we find clicked point
+  let point;
+  const curve = curves.findIndex(curve => {
+    const pointFound = checkIfCursorInPoint(curve);
+
+    if (pointFound) {
+      point = pointFound;
+      return true;
+    }
+    return false;
+  });
+
+  if (point && curve !== null) {
+    pointToMove = {
+      curve,
+      point,
+    };
+  }
 });
 
 canvas.addEventListener('mouseup', () => {
   //Main on click down. Used for simple detection
   isClickDown = false;
   //Not moving that point any more
-  // pointToMove = null;
+  pointToMove = null;
 });
 
 //Change ball speed on initial document load

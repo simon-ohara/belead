@@ -11,8 +11,10 @@ declare const slider: HTMLInputElement;
 declare const sliderTxt: HTMLElement;
 declare const addPoint: HTMLInputElement;
 declare function parseSliderValue(sliderValue: number): void;
-declare const getLastPoint: () => ControlPoint;
-declare const ballAtLastPoint: () => boolean;
+declare const getFirstPoint: (curve: BezierCurve) => ControlPoint;
+declare const getLastPoint: (curve: BezierCurve) => ControlPoint;
+declare const ballAtLastPoint: (curve: BezierCurve) => boolean;
+declare const ballAtFinalPoint: () => boolean;
 declare function playBtnText(): void;
 declare enum PointType {
     INNER = 0,
@@ -44,12 +46,18 @@ declare class Ball {
 declare const curves: BezierCurve[];
 declare const ball: Ball;
 declare const posRadius = 7;
+interface ActivePoint {
+    curve: number;
+    point: ControlPoint;
+}
+declare let pointToMove: ActivePoint | null;
 declare let isClickDown: boolean;
-declare function moveBallInBezierCurve(curve: BezierCurve): void;
+declare let currentBallCurve: number;
+declare function moveBallInBezierCurve(): void;
 declare function drawBall(): void;
 declare function drawPoints(curve: BezierCurve): void;
 declare function isMouseOverPoint(point: Point): boolean;
 declare function checkIfCursorInPoint(curve?: BezierCurve): ControlPoint | null;
-declare function movePoint(curve: BezierCurve, pointToMove: ControlPoint): void;
+declare function movePoint(): void;
 declare function drawLine(curve: BezierCurve): void;
 declare function animate(): void;
