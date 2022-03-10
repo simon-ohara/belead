@@ -1,16 +1,55 @@
-<div id="application">
-  <h1>Moving Objects On Bezier Curve</h1>
-  <canvas width="600" height="600" id="canvas"></canvas>
-  <button id="play-btn">Play</button>
-  <label>
-    <span>Add point</span>
-    <input type="checkbox" id="add-point" />
-  </label>
-  <div id="speed-slider">
-    <p>Speed <span id="slider-text"></span></p>
-    <input type="range" min="1" max="10" value="5" id="slider" />
-  </div>
-</div>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Path Generator</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      #application {
+        display: flex;
+        flex-direction: column;
+      }
 
-<!--Script. Do Not touch.-->
-<script src="scripts/path-generator.bundle.js"></script>
+      h1 {
+        text-align: center;
+      }
+
+      #canvas {
+        margin: auto;
+        border: 1px solid lightgray;
+      }
+
+      #controls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="application">
+      <h1>Path Generator</h1>
+      <canvas width="600" height="600" id="canvas"></canvas>
+      <div id="controls">
+        <div id="speed-slider">
+          <p>Speed <span id="slider-text"></span></p>
+          <input type="range" min="1" max="10" value="5" id="slider" />
+        </div>
+        <button id="play-btn">Play</button>
+        <button id="reset-btn">Reset</button>
+        <label>
+          <span>Add point</span>
+          <input type="checkbox" id="add-point" />
+        </label>
+      </div>
+    </div>
+
+    <!--Script. Do Not touch.-->
+    <script src="scripts/path-generator.bundle.js"></script>
+  </body>
+</html>
