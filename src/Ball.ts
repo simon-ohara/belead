@@ -12,4 +12,8 @@ export default class Ball {
     this.t = t;
     this.radius = radius;
   }
+
+  isAt(x: number, y: number): boolean {
+    return this.x === x && this.y === y;
+  }
 }
