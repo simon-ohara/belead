@@ -1,3 +1,4 @@
+import {getColor} from '../colors';
 import ControlPoint from './ControlPoint';
 
 export default class BezierCurve {
@@ -16,6 +17,7 @@ export default class BezierCurve {
 
   drawLine(ctx: CanvasRenderingContext2D): void {
     ctx.save();
+    ctx.strokeStyle = getColor('path');
     ctx.beginPath();
     ctx.setLineDash([8, 15]);
     ctx.moveTo(this.points[0].x, this.points[0].y);
@@ -34,7 +36,7 @@ export default class BezierCurve {
   drawPoints(ctx: CanvasRenderingContext2D) {
     ctx.save();
     // Draw handles for intermediate control points
-    ctx.strokeStyle = 'green';
+    ctx.strokeStyle = getColor('control-arm');
     [this.points.slice(0, 2), this.points.slice(2)]
       .map(handle => handle.sort((a, b) => b.type - a.type))
       .forEach(handle => {
@@ -45,14 +47,25 @@ export default class BezierCurve {
         ctx.stroke();
       });
 
-    ctx.fillStyle = 'red';
     // Actually render the points to the canvas
-    this.points.forEach(point => {
-      ctx.beginPath();
-      ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2, false);
-      ctx.fill();
+    this.points.forEach((point, idx) => {
+      if (idx % 3 === 0) {
+        ctx.fillStyle = getColor('end-point');
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2, false);
+        ctx.fill();
+      } else {
+        ctx.fillStyle = getColor('control-point');
+        ctx.fillRect(
+          point.x - point.radius / 2,
+          point.y - point.radius / 2,
+          point.radius,
+          point.radius
+        );
+      }
       // Deal with text
       ctx.font = '11px Arial';
+      ctx.fillStyle = getColor('labels');
       ctx.fillText(`(${point.x},${point.y})`, point.x, point.y + 30);
     });
     ctx.restore();

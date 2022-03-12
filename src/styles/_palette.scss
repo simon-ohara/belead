@@ -1,15 +1,31 @@
 :root {
   // https://flatuicolors.com/palette/es
   --palette-lucky-point: #2c2c54;
-  --palette-swan-white: #f7f1e3;
-  --palette-crocodile-tooth: #d1ccc0;
+  --palette-jacksons-purple: #40407a;
+  --palette-devil-blue: #227093;
   --palette-celestial-green: #33d9b2;
   --palette-palm-springs-splash: #218c74;
+  --palette-chilean-fire: #cd6133;
+  --palette-swan-white: #f7f1e3;
+  --palette-hot-stone: #84817a;
+  --palette-crocodile-tooth: #d1ccc0;
+  --palette-grey-porcelain: #84817a;
 
-  --app-background: var(--palette-swan-white);
-  --text-color: var(--palette-swan-white);
+  // generics
+  --background: var(--palette-swan-white);
+  --text-color: var(--palette-lucky-point);
+
+  // controls
+  --button-label: var(--palette-swan-white);
   --button-background: var(--palette-lucky-point);
+  --button-background-hover: var(--palette-jacksons-purple);
   --button-background-active: var(--palette-palm-springs-splash);
 
+  // application
   --belead-ball: var(--palette-lucky-point);
+  --belead-end-point: var(--palette-devil-blue);
+  --belead-path: var(--palette-chilean-fire);
+  --belead-control-point: var(--palette-devil-blue);
+  --belead-control-arm: var(--palette-crocodile-tooth);
+  --belead-labels: var(--palette-crocodile-tooth);
 }

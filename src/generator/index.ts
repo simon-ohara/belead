@@ -159,8 +159,6 @@ export default class Generator {
           [this.cursor.x, this.cursor.y],
         ])
       );
-
-      this.adding = false;
     }
 
     this.path.startDrag(this.cursor);

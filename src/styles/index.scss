@@ -5,17 +5,13 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: var(--app-background);
+  background-color: var(--background);
+  color: var(--text-color);
 }
 
 #application {
   display: flex;
   flex-direction: column;
-
-  h1 {
-    text-align: center;
-    color: green;
-  }
 }
 
 #canvas {
@@ -33,23 +29,29 @@ body {
 .icon-button {
   border: none;
   background: none;
+  cursor: pointer;
 
   i {
     display: block;
     box-sizing: border-box;
     border-radius: 50%;
     background-color: var(--button-background);
-    color: var(--text-color);
+    color: var(--button-label);
     width: 40px;
     height: 40px;
     padding: 12px;
+  }
+
+  &:hover {
+    i {
+      background-color: var(--button-background-hover);
+    }
   }
 }
 
 .option-button {
   position: relative;
   user-select: none;
-  cursor: pointer;
 
   input {
     position: absolute;

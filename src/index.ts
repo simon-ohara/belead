@@ -1,4 +1,5 @@
 import Generator from './generator';
+import UserInput, {UserInputMap} from './UserInput';
 
 (() => {
   const canvas: HTMLCanvasElement = document.getElementById(
@@ -9,6 +10,20 @@ import Generator from './generator';
   generator.addEventListener('complete', () => {
     playBtn.classList.add('paused');
     // playBtn.textContent = 'Play';
+  });
+
+  const input = new UserInput();
+  input.addEventListener('keydown', (inputs: UserInputMap[]) => {
+    if (inputs.includes(UserInputMap.ADD)) {
+      addPoint.checked = true;
+      addPoint.dispatchEvent(new Event('change'));
+    }
+  });
+  input.addEventListener('keyup', (inputs: UserInputMap[]) => {
+    if (!inputs.includes(UserInputMap.ADD)) {
+      addPoint.checked = false;
+      addPoint.dispatchEvent(new Event('change'));
+    }
   });
 
   const playBtn = document.getElementById('play-button')!;
@@ -52,7 +67,6 @@ import Generator from './generator';
   canvas.addEventListener('mousedown', generator.onMouseDown.bind(generator));
   canvas.addEventListener('mouseup', () => {
     generator.onMouseUp.call(generator);
-    addPoint.checked = false;
   });
 
   generator.start();
