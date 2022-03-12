@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Path Generator</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
       html,
       body {
         margin: 0;
         padding: 0;
         font-family: Arial, Helvetica, sans-serif;
+        color: red;
       }
       #application {
         display: flex;
@@ -48,8 +49,5 @@
         </label>
       </div>
     </div>
-
-    <!--Script. Do Not touch.-->
-    <script src="scripts/path-generator.bundle.js"></script>
   </body>
 </html>
