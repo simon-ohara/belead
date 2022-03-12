@@ -74,10 +74,8 @@ export default class Generator {
     this.path.getAllCurves().forEach(curve => curve.draw(this.context));
   }
 
-  followPath(): void {
-    const curve = this.path.getCurve(this.currentBallCurve);
-    const [p0, p1, p2, p3] = curve.getAllPoints();
-    //Calculate the coefficients based on where the ball currently is in the animation
+  getNextPosition([p0, p1, p2, p3]: SimpleCurve, t: number): Position {
+    // Calculate the coefficients based on current points
     const cx = 3 * (p1.x - p0.x);
     const bx = 3 * (p2.x - p1.x) - cx;
     const ax = p3.x - p0.x - cx - bx;
@@ -86,25 +84,35 @@ export default class Generator {
     const by = 3 * (p2.y - p1.y) - cy;
     const ay = p3.y - p0.y - cy - by;
 
-    const t = this.ball.t;
-
-    //Increment t value by speed
-    this.ball.t += this.ball.speed;
-    //Calculate new X & Y positions of ball
+    // Calculate new X & Y positions of ball
     const xt = ax * (t * t * t) + bx * (t * t) + cx * t + p0.x;
     const yt = ay * (t * t * t) + by * (t * t) + cy * t + p0.y;
 
+    return {x: xt, y: yt};
+  }
+
+  followPath(): void {
+    const curve = this.path.getCurve(this.currentBallCurve);
+
+    // We draw the ball to the canvas in the new location
+    this.ball.update(
+      this.getNextPosition(
+        curve
+          .getAllPoints()
+          .map(point => ({x: point.x, y: point.y})) as SimpleCurve,
+        this.ball.t
+      ),
+      this.context
+    );
+
+    //Increment t value by speed
+    this.ball.t += this.ball.speed;
     if (this.ball.t > 1) {
       this.ball.t = 1;
     }
 
-    //We draw the ball to the canvas in the new location
-    this.ball.x = xt;
-    this.ball.y = yt;
-    this.ball.draw(this.context);
-
+    // Transition to next curve
     const lastPoint = curve.getPoint(3);
-
     if (this.ball.x === lastPoint.x && this.ball.y === lastPoint.y) {
       if (this.currentBallCurve < this.path.totalCurves - 1) {
         this.currentBallCurve++;
@@ -175,9 +183,14 @@ export default class Generator {
     this.path.dragged = undefined;
   }
 
-  export(): [number, number][][] {
+  export(): SimpleCurve[] {
     return this.path
       .getAllCurves()
-      .map(curve => curve.getAllPoints().map(point => [point.x, point.y]));
+      .map(
+        curve =>
+          curve
+            .getAllPoints()
+            .map(point => ({x: point.x, y: point.y})) as SimpleCurve
+      );
   }
 }

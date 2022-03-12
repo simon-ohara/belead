@@ -32,4 +32,10 @@ export default class Ball {
   isAt(x: number, y: number): boolean {
     return this.x === x && this.y === y;
   }
+
+  update(position: Position, ctx: CanvasRenderingContext2D): void {
+    this.x = position.x;
+    this.y = position.y;
+    this.draw(ctx);
+  }
 }
