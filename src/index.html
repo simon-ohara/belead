@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+
+  <body>
+    <div id="application">
+      <h1>Path Generator</h1>
+
+      <canvas width="600" height="600" id="canvas"></canvas>
+
+      <div id="controls">
+        <div id="speed-slider">
+          <p>Speed <span id="slider-text"></span></p>
+          <input type="range" min="1" max="10" value="5" id="slider" />
+        </div>
+        <button id="play-button" class="icon-button paused">
+          <i>
+            <svg>
+              <use
+                class="play-icon"
+                xlink:href="assets/icons/regular.svg#play"
+              ></use>
+              <use
+                class="pause-icon"
+                xlink:href="assets/icons/regular.svg#pause"
+              ></use>
+            </svg>
+          </i>
+        </button>
+        <button id="reset-btn" class="icon-button">
+          <i>
+            <svg>
+              <use xlink:href="assets/icons/regular.svg#history"></use>
+            </svg>
+          </i>
+        </button>
+        <label class="icon-button option-button">
+          <input type="checkbox" id="add-point" />
+          <i>
+            <svg>
+              <use xlink:href="assets/icons/regular.svg#plus"></use>
+            </svg>
+          </i>
+        </label>
+      </div>
+    </div>
+  </body>
+</html>

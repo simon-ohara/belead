@@ -1,0 +1,15 @@
+:root {
+  // https://flatuicolors.com/palette/es
+  --palette-lucky-point: #2c2c54;
+  --palette-swan-white: #f7f1e3;
+  --palette-crocodile-tooth: #d1ccc0;
+  --palette-celestial-green: #33d9b2;
+  --palette-palm-springs-splash: #218c74;
+
+  --app-background: var(--palette-swan-white);
+  --text-color: var(--palette-swan-white);
+  --button-background: var(--palette-lucky-point);
+  --button-background-active: var(--palette-palm-springs-splash);
+
+  --belead-ball: var(--palette-lucky-point);
+}
