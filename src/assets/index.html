@@ -2,40 +2,14 @@
 <html>
   <head>
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        color: red;
-      }
-      #application {
-        display: flex;
-        flex-direction: column;
-      }
-
-      h1 {
-        text-align: center;
-      }
-
-      #canvas {
-        margin: auto;
-        border: 1px solid lightgray;
-      }
-
-      #controls {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-evenly;
-      }
-    </style>
   </head>
+
   <body>
     <div id="application">
       <h1>Path Generator</h1>
+
       <canvas width="600" height="600" id="canvas"></canvas>
+
       <div id="controls">
         <div id="speed-slider">
           <p>Speed <span id="slider-text"></span></p>

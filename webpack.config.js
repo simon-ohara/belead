@@ -3,9 +3,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // eslint-disable-next-line node/no-unpublished-require
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+// eslint-disable-next-line node/no-unpublished-require
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: {
+    main: ['./src/index.ts', './src/styles/index.scss'],
+  },
   devtool: 'inline-source-map',
   devServer: {
     static: {
@@ -13,11 +17,14 @@ module.exports = {
     },
     compress: true,
     port: 8080,
-    watchFiles: ['src/**/*', 'assets/**/*'],
   },
   mode: 'development',
   module: {
     rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
@@ -29,14 +36,16 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'path-generator.bundle.js',
     path: path.resolve(__dirname, 'public'),
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      linkType: 'text/css',
+    }),
     new HtmlWebpackPlugin({
       title: 'Path Generator',
-      template: './assets/index.html',
+      template: './src/assets/index.html',
     }),
   ],
 };
