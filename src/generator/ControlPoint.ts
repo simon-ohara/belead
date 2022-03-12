@@ -3,9 +3,7 @@ export enum PointType {
   OUTER,
 }
 
-export interface Point {
-  x: number;
-  y: number;
+export interface Point extends Position {
   radius: number;
   type: PointType;
 }

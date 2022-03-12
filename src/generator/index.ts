@@ -140,7 +140,7 @@ export default class Generator {
 
     if (this.adding) {
       const lastPoint = this.path.getLastCurve().getPoint(3);
-      const delta: {x: number; y: number} = {
+      const delta: Position = {
         x: this.cursor.x - lastPoint.x,
         y: this.cursor.y - lastPoint.y,
       };
@@ -173,5 +173,11 @@ export default class Generator {
 
   onMouseUp(): void {
     this.path.dragged = undefined;
+  }
+
+  export(): [number, number][][] {
+    return this.path
+      .getAllCurves()
+      .map(curve => curve.getAllPoints().map(point => [point.x, point.y]));
   }
 }

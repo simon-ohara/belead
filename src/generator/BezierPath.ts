@@ -47,7 +47,7 @@ export default class BezierPath {
   drag(
     curveIndex: number,
     point: ControlPoint,
-    cursor: {x: number; y: number},
+    cursor: Position,
     isPrimary = true
   ): void {
     const curve = this.getCurve(curveIndex);
@@ -56,7 +56,7 @@ export default class BezierPath {
     // constrain intermediate control point relative to outer point
     if (index % 3 === 0) {
       const innerPoint = curve.getPoint(index + 1) || curve.getPoint(index - 1);
-      const delta: {x: number; y: number} = {
+      const delta: Position = {
         x: point.x - innerPoint.x,
         y: point.y - innerPoint.y,
       };
@@ -75,7 +75,7 @@ export default class BezierPath {
       if (curveIndex > 0 && index === 1) {
         const prevCurveLastPoint = this.getCurve(curveIndex - 1).getPoint(2);
         const outerPoint = curve.getPoint(index - 1);
-        const delta: {x: number; y: number} = {
+        const delta: Position = {
           x: outerPoint.x - point.x,
           y: outerPoint.y - point.y,
         };
@@ -86,7 +86,7 @@ export default class BezierPath {
       if (curveIndex < this.totalCurves - 1 && index === 2) {
         const nextCurveFirstPoint = this.getCurve(curveIndex + 1).getPoint(1);
         const outerPoint = curve.getPoint(index + 1);
-        const delta: {x: number; y: number} = {
+        const delta: Position = {
           x: outerPoint.x - point.x,
           y: outerPoint.y - point.y,
         };

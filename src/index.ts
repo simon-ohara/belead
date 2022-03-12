@@ -9,7 +9,12 @@ import UserInput, {UserInputMap} from './UserInput';
   const generator = new Generator(canvas);
   generator.addEventListener('complete', () => {
     playBtn.classList.add('paused');
-    // playBtn.textContent = 'Play';
+  });
+
+  canvas.addEventListener('mousemove', generator.onMouseMove.bind(generator));
+  canvas.addEventListener('mousedown', generator.onMouseDown.bind(generator));
+  canvas.addEventListener('mouseup', () => {
+    generator.onMouseUp.call(generator);
   });
 
   const input = new UserInput();
@@ -31,13 +36,10 @@ import UserInput, {UserInputMap} from './UserInput';
     if (generator.play) {
       generator.play = false;
       playBtn.classList.add('paused');
-      // playBtn.textContent = 'Play';
       return;
     }
     generator.currentBallCurve = 0;
     generator.play = true;
-    // slider.disabled = true;
-    // playBtn.textContent = 'Pause';
     playBtn.classList.remove('paused');
     if (generator.ballAtFinalPoint()) {
       generator.resetBall();
@@ -63,10 +65,9 @@ import UserInput, {UserInputMap} from './UserInput';
     generator.adding = addPoint.checked;
   });
 
-  canvas.addEventListener('mousemove', generator.onMouseMove.bind(generator));
-  canvas.addEventListener('mousedown', generator.onMouseDown.bind(generator));
-  canvas.addEventListener('mouseup', () => {
-    generator.onMouseUp.call(generator);
+  const exportButton = document.getElementById('export-button')!;
+  exportButton.addEventListener('click', () => {
+    console.log('EXPORT!', generator.export());
   });
 
   generator.start();

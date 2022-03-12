@@ -4,14 +4,14 @@ export enum UserInputMap {
 
 export default class UserInput {
   keys: UserInputMap[] = [];
-  events: Record<string, (...args: unknown[]) => void>[] = [];
+  events: Record<string, (inputs: UserInputMap[]) => void>[] = [];
 
   constructor() {
     document.addEventListener('keydown', event => {
-      console.log('keydown', event);
       this.handleKeyEvent(event, true);
       this.dispatchEvent('keydown');
     });
+
     document.addEventListener('keyup', event => {
       this.handleKeyEvent(event, false);
       this.dispatchEvent('keyup');
@@ -35,7 +35,10 @@ export default class UserInput {
     }
   }
 
-  addEventListener(name: string, handler: (...args: any[]) => void): void {
+  addEventListener(
+    name: string,
+    handler: (inputs: UserInputMap[]) => void
+  ): void {
     this.events.push({
       [name]: handler,
     });

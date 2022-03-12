@@ -3,6 +3,7 @@
     "outDir": "./public",
     "declaration": false,
     "lib": ["DOM"],
+    "typeRoots": ["./src/@types", "./node_modules/@types"],
     "sourceMap": false,
     "noImplicitAny": true,
     "module": "es6",
