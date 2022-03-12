@@ -36,6 +36,10 @@ export default class Ball {
   update(position: Position, ctx: CanvasRenderingContext2D): void {
     this.x = position.x;
     this.y = position.y;
+    this.t += this.speed;
+    if (this.t > 1) {
+      this.t = 1;
+    }
     this.draw(ctx);
   }
 }

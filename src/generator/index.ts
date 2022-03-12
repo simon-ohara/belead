@@ -75,16 +75,17 @@ export default class Generator {
   }
 
   getNextPosition([p0, p1, p2, p3]: SimpleCurve, t: number): Position {
-    // Calculate the coefficients based on current points
+    // X coefficients based on current points
     const cx = 3 * (p1.x - p0.x);
     const bx = 3 * (p2.x - p1.x) - cx;
     const ax = p3.x - p0.x - cx - bx;
 
+    // Y coefficients based on current points
     const cy = 3 * (p1.y - p0.y);
     const by = 3 * (p2.y - p1.y) - cy;
     const ay = p3.y - p0.y - cy - by;
 
-    // Calculate new X & Y positions of ball
+    // Calculate new X & Y positions of ball using tValue
     const xt = ax * (t * t * t) + bx * (t * t) + cx * t + p0.x;
     const yt = ay * (t * t * t) + by * (t * t) + cy * t + p0.y;
 
@@ -105,22 +106,19 @@ export default class Generator {
       this.context
     );
 
-    //Increment t value by speed
-    this.ball.t += this.ball.speed;
-    if (this.ball.t > 1) {
-      this.ball.t = 1;
-    }
-
     // Transition to next curve
     const lastPoint = curve.getPoint(3);
-    if (this.ball.x === lastPoint.x && this.ball.y === lastPoint.y) {
+    if (this.ball.isAt(lastPoint.x, lastPoint.y)) {
       if (this.currentBallCurve < this.path.totalCurves - 1) {
+        // if this is not the last curve move to next
         this.currentBallCurve++;
+        // Reset tValue
         this.ball.t = this.ball.speed;
-      } else {
-        this.play = false;
-        this.dispatchEvent('complete');
+        return;
       }
+      // if this is last curve stop
+      this.play = false;
+      this.dispatchEvent('complete');
     }
   }
 
