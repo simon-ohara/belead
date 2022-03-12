@@ -1,4 +1,4 @@
-import Generator from './Generator';
+import Generator from './generator';
 
 (() => {
   const canvas: HTMLCanvasElement = document.getElementById(
@@ -7,20 +7,23 @@ import Generator from './Generator';
 
   const generator = new Generator(canvas);
   generator.addEventListener('complete', () => {
-    playBtn.textContent = 'Play';
+    playBtn.classList.add('paused');
+    // playBtn.textContent = 'Play';
   });
 
-  const playBtn = document.getElementById('play-btn')!;
+  const playBtn = document.getElementById('play-button')!;
   playBtn.addEventListener('click', () => {
     if (generator.play) {
       generator.play = false;
-      playBtn.textContent = 'Play';
+      playBtn.classList.add('paused');
+      // playBtn.textContent = 'Play';
       return;
     }
     generator.currentBallCurve = 0;
     generator.play = true;
     // slider.disabled = true;
-    playBtn.textContent = 'Pause';
+    // playBtn.textContent = 'Pause';
+    playBtn.classList.remove('paused');
     if (generator.ballAtFinalPoint()) {
       generator.resetBall();
     }

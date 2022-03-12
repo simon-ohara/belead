@@ -5,6 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 // eslint-disable-next-line node/no-unpublished-require
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// eslint-disable-next-line node/no-unpublished-require
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -44,8 +46,11 @@ module.exports = {
       linkType: 'text/css',
     }),
     new HtmlWebpackPlugin({
-      title: 'Path Generator',
-      template: './src/assets/index.html',
+      title: 'be:Lead',
+      template: './src/index.html',
+    }),
+    new CopyPlugin({
+      patterns: [{from: 'src/assets', to: 'assets'}],
     }),
   ],
 };

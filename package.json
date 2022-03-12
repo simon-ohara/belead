@@ -1,7 +1,7 @@
 {
-  "name": "path-generator",
+  "name": "belead",
   "version": "1.0.0",
-  "description": "Tool for generating curved paths to output points",
+  "description": "Interactive tool for generating curved paths that can be used to provide routes for animations",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@types/node": "^14.11.2",
     "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.7.1",
     "gts": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
