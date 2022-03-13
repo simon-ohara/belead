@@ -68,15 +68,21 @@ import {format} from './json-format';
     generator.adding = addPoint.checked;
   });
 
-  const exportButton = document.getElementById('export-button')!;
+  const exportButton = document.getElementById(
+    'export-button'
+  )! as HTMLInputElement;
+
   const outputArea = document.getElementById('output')!;
-  exportButton.addEventListener('click', () => {
-    console.log('EXPORT!', generator.export());
+  exportButton.addEventListener('change', () => {
+    outputArea.classList.toggle('show', exportButton.checked);
+  });
+
+  generator.addEventListener('update', () => {
+    if (!exportButton.checked) return;
     outputArea.textContent = format(generator.export(), {
       type: 'space',
       size: 2,
     });
   });
-
   generator.start();
 })();

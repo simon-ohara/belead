@@ -72,6 +72,7 @@ export default class Generator {
     }
 
     this.path.getAllCurves().forEach(curve => curve.draw(this.context));
+    this.dispatchEvent('update');
   }
 
   getNextPosition([p0, p1, p2, p3]: SimpleCurve, t: number): Position {

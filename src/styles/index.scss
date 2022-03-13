@@ -22,6 +22,11 @@ body {
 
 #output {
   min-width: 25vw;
+  display: none;
+
+  &.show {
+    display: block;
+  }
 }
 
 #canvas {
