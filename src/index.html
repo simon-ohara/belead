@@ -5,10 +5,13 @@
   </head>
 
   <body>
-    <div id="application">
+    <main id="application">
       <h1><%= htmlWebpackPlugin.options.title %></h1>
 
-      <canvas width="600" height="600" id="canvas"></canvas>
+      <section id="workspace">
+        <canvas width="600" height="600" id="canvas"></canvas>
+        <pre id="output"></pre>
+      </section>
 
       <div id="controls">
         <div id="speed-slider">
@@ -52,6 +55,6 @@
           </i>
         </button>
       </div>
-    </div>
+    </main>
   </body>
 </html>

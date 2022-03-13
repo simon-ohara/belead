@@ -14,6 +14,16 @@ body {
   flex-direction: column;
 }
 
+#workspace {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#output {
+  min-width: 25vw;
+}
+
 #canvas {
   margin: auto;
   border: 1px solid lightgray;

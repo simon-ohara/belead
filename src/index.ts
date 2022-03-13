@@ -1,6 +1,9 @@
 import Generator from './generator';
 import UserInput, {UserInputMap} from './UserInput';
 
+// eslint-disable-next-line node/no-unpublished-import
+import {format} from './json-format';
+
 (() => {
   const canvas: HTMLCanvasElement = document.getElementById(
     'canvas'
@@ -66,8 +69,13 @@ import UserInput, {UserInputMap} from './UserInput';
   });
 
   const exportButton = document.getElementById('export-button')!;
+  const outputArea = document.getElementById('output')!;
   exportButton.addEventListener('click', () => {
     console.log('EXPORT!', generator.export());
+    outputArea.textContent = format(generator.export(), {
+      type: 'space',
+      size: 2,
+    });
   });
 
   generator.start();
